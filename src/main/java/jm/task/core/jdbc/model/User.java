@@ -1,21 +1,24 @@
 package jm.task.core.jdbc.model;
 
-import javax.persistence.Column;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.util.Objects;
 
-@Table
+@Entity
+@Table (name = "user")
 public class User {
+
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private Long id;
 
-    @Column
+    @Column (name = "name")
     private String name;
 
-    @Column
+    @Column  (name = "lastName")
     private String lastName;
 
-    @Column
+    @Column  (name = "age")
     private Byte age;
 
     public User() {
@@ -60,10 +63,6 @@ public class User {
         this.age = age;
     }
 
-//    @Override
-//   public String toString() {
- //       return super.toString();
-//    }
 
     @Override
     public String toString() {
@@ -74,4 +73,27 @@ public class User {
                 ", age=" + age +
                 '}';
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        User user = (User) o;
+
+        if (!Objects.equals(id, user.id)) return false;
+        if (!Objects.equals(name, user.name)) return false;
+        if (!Objects.equals(lastName, user.lastName)) return false;
+        return Objects.equals(age, user.age);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = id != null ? id.hashCode() : 0;
+        result = 31 * result + (name != null ? name.hashCode() : 0);
+        result = 31 * result + (lastName != null ? lastName.hashCode() : 0);
+        result = 31 * result + (age != null ? age.hashCode() : 0);
+        return result;
+    }
 }
+
