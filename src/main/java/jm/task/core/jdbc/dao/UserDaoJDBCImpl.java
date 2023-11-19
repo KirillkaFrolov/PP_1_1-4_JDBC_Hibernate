@@ -16,7 +16,7 @@ public class UserDaoJDBCImpl {
 
     }
 
-    public void createUsersTable() throws SQLException {
+    public void createUsersTable() {
 
         String create = "CREATE TABLE IF NOT EXISTS user (id BIGINT PRIMARY KEY AUTO_INCREMENT, name VARCHAR(255), lastname VARCHAR(255), age TINYINT);";
 
@@ -28,12 +28,11 @@ public class UserDaoJDBCImpl {
 
         } catch (Exception e) {
             e.printStackTrace();
-            connection.rollback();
         }
 
     }
 
-    public void dropUsersTable() throws SQLException {
+    public void dropUsersTable() {
         String dropTable = "DROP TABLE user";
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(dropTable);
@@ -44,7 +43,7 @@ public class UserDaoJDBCImpl {
         }
     }
 
-    public void saveUser(String name, String lastName, byte age) throws SQLException {
+    public void saveUser(String name, String lastName, byte age) {
 
 
         try {
@@ -57,11 +56,10 @@ public class UserDaoJDBCImpl {
             connection.commit();
         } catch (SQLException e) {
             e.printStackTrace();
-            connection.rollback();
         }
     }
 
-    public void removeUserById(long id) throws  SQLException {
+    public void removeUserById(long id) {
         String delete = "DELETE FROM user WHERE id = ?";
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(delete);
@@ -69,7 +67,6 @@ public class UserDaoJDBCImpl {
             connection.commit();
         } catch (Exception e) {
             e.printStackTrace();
-            connection.rollback();
         }
     }
 
@@ -102,7 +99,7 @@ public class UserDaoJDBCImpl {
 
 
 
-    public void cleanUsersTable() throws SQLException {
+    public void cleanUsersTable() {
         String truncate = "TRUNCATE TABLE user";
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(truncate);
@@ -110,7 +107,6 @@ public class UserDaoJDBCImpl {
             connection.commit();
         } catch (Exception e) {
             e.printStackTrace();
-            connection.rollback();
         }
 
     }
