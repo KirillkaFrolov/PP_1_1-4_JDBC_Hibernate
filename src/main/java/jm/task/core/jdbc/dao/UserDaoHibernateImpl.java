@@ -7,6 +7,7 @@ import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.HibernateException;
 
+import javax.persistence.Query;
 import java.util.List;
 
 public class UserDaoHibernateImpl implements UserDao {
@@ -69,13 +70,16 @@ public class UserDaoHibernateImpl implements UserDao {
     @Override
     public void removeUserById(long id) {
 
-        String delete = "DELETE FROM user WHERE id = ?";
+        String hql = "DELETE FROM User WHERE id = :userId";
         Transaction transaction = null;
-        try (Session session = sessionFactory.openSession()) {
 
+        try (Session session = sessionFactory.openSession()) {
             transaction = session.beginTransaction();
 
-            session.createNativeQuery(delete).executeUpdate();
+            Query query = session.createQuery(hql);
+            query.setParameter("userId", id);
+            query.executeUpdate();
+
             transaction.commit();
         } catch (HibernateException e) {
             e.printStackTrace();
@@ -87,12 +91,10 @@ public class UserDaoHibernateImpl implements UserDao {
 
     @Override
     public List<User> getAllUsers() {
-        List userList = null;
-        String select = "From " + User.class.getSimpleName();
+        List<User> userList = null;
         try (Session session = sessionFactory.openSession()) {
-
             try {
-                userList = session.createQuery(select).list();
+                userList = session.createQuery("FROM User", User.class).list();
             } catch (HibernateException e) {
                 e.printStackTrace();
             }
